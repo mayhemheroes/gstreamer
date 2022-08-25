@@ -1,0 +1,4 @@
+project: PROJECT
+target: gst-discoverer
+cmds:
+- cmd: /out/gst-discoverer
