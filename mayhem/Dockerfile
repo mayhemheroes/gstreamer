@@ -15,15 +15,14 @@
 ################################################################################
 FROM gcr.io/oss-fuzz-base/base-builder
 
-RUN apt-get update && apt-get install -y make autoconf automake libtool build-essential pkg-config bison flex patchelf python3-pip ninja-build && pip3 install meson==0.61.3
+RUN apt-get update && apt-get install -y make autoconf automake libtool build-essential pkg-config bison flex patchelf python3-pip && pip3 install meson==1.8.2 ninja==1.11.1.4
 
 RUN git clone --depth 1 https://gitlab.xiph.org/xiph/vorbis.git vorbis
 RUN git clone --depth 1 https://gitlab.xiph.org/xiph/ogg.git ogg
 RUN git clone --depth 1 https://gitlab.xiph.org/xiph/theora.git theora
 
-# Checkout repository
-COPY . gstreamer
-RUN rm -rf gstreamer/mayhem
+# Checkout repository from upstream with all wrap files (needed for glib subproject)
+RUN git clone --depth 1 --recursive https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer
 
 WORKDIR gstreamer
 COPY mayhem/build.sh $SRC/
